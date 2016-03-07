@@ -43,6 +43,9 @@ Plugin 'SirVer/ultisnips'
 
 Plugin 'editorconfig/editorconfig-vim'
 
+Plugin 'lervag/vimtex'
+Plugin 'xuhdev/vim-latex-live-preview'
+
 "All of your Plugins must be added before the following line
 call vundle#end()
 
@@ -166,4 +169,8 @@ noremap <F6> :Autoformat<CR>
 
 "Autoformat formatters javascript prior
 let g:formatters_javascript = ["jscs", "jsbeautify_javascript"]
+
+"vim-latex-live-preview
+autocmd Filetype tex setl updatetime=1
+let g:livepreview_previewer = 'open -a Preview'
 
