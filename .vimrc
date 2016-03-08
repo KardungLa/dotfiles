@@ -40,6 +40,8 @@ Plugin 'tpope/vim-surround'
 Plugin 'gorodinskiy/vim-coloresque'
 
 Plugin 'SirVer/ultisnips'
+" Snippets are separated from the engine. Add this if you want them:
+Plugin 'honza/vim-snippets'
 
 Plugin 'editorconfig/editorconfig-vim'
 
@@ -100,14 +102,12 @@ set spell spelllang=en_us
 "
 "Trigger configuration. Do not use <tab> if you use
 "#https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsExpandTrigger="<F10>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 "
 "If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
-
-let g:UltiSnipsSnippetDirectories=["UltiSnips", "snippets"]
 
 let delimitMate_expand_cr = 1
 
