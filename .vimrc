@@ -136,7 +136,7 @@ let g:airline_powerline_fonts = 1
 
 
 if !exists("g:ycm_semantic_triggers")
-    let g:ycm_semantic_triggers = {}
+	let g:ycm_semantic_triggers = {}
 endif
 let g:ycm_semantic_triggers['typescript'] = ['.']
 set completeopt-=preview
@@ -173,4 +173,26 @@ let g:formatters_javascript = ["jscs", "jsbeautify_javascript"]
 "vim-latex-live-preview
 autocmd Filetype tex setl updatetime=1
 let g:livepreview_previewer = 'open -a Preview'
+
+"""""""""""""""""""""""""""""""""""
+" FUNCTIONS                       "
+"""""""""""""""""""""""""""""""""""
+
+"http://dalibornasevic.com/posts/43-12-vim-tips
+"usage:
+":vimgrep /CurrencyNumberHelper/ app/models/*.rb
+":Qargs
+":argdo %s/CurrencyNumberHelper/CurrencyHelper/g
+":argdo update
+command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
+
+" populate the argument list with each of the files named in the quickfix list
+function! QuickfixFilenames()
+	let buffer_numbers = {}
+	for quickfix_item in getqflist()
+		let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
+	endfor
+	return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
+endfunction
+
 
