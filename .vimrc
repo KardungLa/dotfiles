@@ -54,7 +54,8 @@ Plugin 'klen/python-mode'
 Plugin 'davidhalter/jedi-vim'               
 "Jinja support for vim
 Plugin 'mitsuhiko/vim-jinja'                
-"Combined Python 2/3 for VimPlugin 'hynek/vim-python-pep8-indent' 
+Plugin 'hynek/vim-python-pep8-indent' 
+"Combined Python 2/3 for Vim
 Plugin 'mitsuhiko/vim-python-combined'      
 Plugin 'jmcantrell/vim-virtualenv' 
 
@@ -108,6 +109,18 @@ set ignorecase
 
 "Enable spellcheck
 set spell spelllang=en_us
+
+"Disable arrow keys in Escape mode
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
+
+"Disable arrow keys in Insert mode
+imap <up> <nop>
+imap <down> <nop>
+imap <left> <nop>
+imap <right> <nop>
 
 """""""""""""""""""""""""
 " PLUGIN CONFIGURATIONS "
@@ -207,7 +220,9 @@ let g:syntastic_html_tidy_ignore_errors += ["trimming empty "]
 " Angular ignores
 let g:syntastic_html_tidy_blocklevel_tags += [
       \ 'ng-include',
-      \ 'ng-form'
+      \ 'ng-form',
+      \ 'ng-hide',
+      \ 'ng-show'
       \ ]
 
 " Angular UI-router ignores

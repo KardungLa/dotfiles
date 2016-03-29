@@ -1,0 +1,154 @@
+# many thanks to
+# https://github.com/panozzaj
+
+###########
+# GENERAL #
+###########
+
+snippet ife
+if ($1) {
+    $2
+} else {
+    $3
+}
+endsnippet
+
+snippet clvi
+var util = require('util')
+console.log('$1: ', util.inspect(${1}, false, null))
+endsnippet
+
+snippet clv
+console.log('$1: ', ${1})
+endsnippet
+
+snippet cl
+console.log('${1}')
+endsnippet
+
+snippet cev
+console.error('$1: ', ${1:err})
+endsnippet
+
+snippet ce
+console.error('${1}')
+endsnippet
+
+
+############
+# PROMISES #
+############
+
+snippet then "then" i
+then(function($1) {
+    $2
+    })
+endsnippet
+
+snippet then( "then" i
+    then(function($1) {
+      $2
+      })
+    endsnippet
+
+    snippet then(f "then" i
+      then(function($1) {
+        $2
+        })
+      endsnippet
+
+      snippet }).t "then" i
+    }).then(function($1) {
+      $2
+      })
+endsnippet
+
+snippet })t "then" i
+}).then(function($1) {
+  $2
+  })
+endsnippet
+
+snippet catch "catch" i
+catch(function(err) {
+    $1
+    })
+endsnippet
+
+snippet catch( "catch" i
+    catch(function(err) {
+      $1
+      })
+    endsnippet
+
+    snippet }).c "catch" i
+}).catch(function(err) {
+  $1
+  })
+endsnippet
+
+snippet })c "then" i
+}).catch(function(err) {
+  $1
+  })
+endsnippet
+
+
+##########
+# LODASH #
+##########
+
+snippet _
+_.$1($2, function() {
+    })
+endsnippet
+
+snippet _map
+_.map($1s, function(${1}) {
+    return ${2}
+    })
+endsnippet
+
+
+
+###########
+# TESTING #
+###########
+
+snippet xit
+xit('${1:description}', () => {
+    $2
+    })
+endsnippet
+
+snippet xdes
+xdescribe('${1:description}', () => {
+    $2
+    })
+endsnippet
+
+snippet "des(c?)" "describe (test)" r
+describe('${1:description}', () => {
+    $2
+    })
+endsnippet
+
+snippet it
+it('${1:description}', () => {
+    $2
+    })
+endsnippet
+
+snippet bef
+beforeEach(() => {
+    $2
+    })
+endsnippet
+
+###########
+# IMPORTS #
+###########
+
+snippet implo
+import _ from 'lodash'
+endsnippet
