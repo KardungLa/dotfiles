@@ -48,6 +48,19 @@ Plugin 'editorconfig/editorconfig-vim'
 Plugin 'lervag/vimtex'
 Plugin 'xuhdev/vim-latex-live-preview'
 
+" Python
+Plugin 'klen/python-mode' 
+"Jedi-vim autocomplete plugin
+Plugin 'davidhalter/jedi-vim'               
+"Jinja support for vim
+Plugin 'mitsuhiko/vim-jinja'                
+"Combined Python 2/3 for VimPlugin 'hynek/vim-python-pep8-indent' 
+Plugin 'mitsuhiko/vim-python-combined'      
+Plugin 'jmcantrell/vim-virtualenv' 
+
+"https://github.com/jeffkreeftmeijer/vim-numbertoggle
+Plugin 'jeffkreeftmeijer/vim-numbertoggle'
+
 "All of your Plugins must be added before the following line
 call vundle#end()
 
@@ -156,9 +169,51 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_python_checkers = ['flake8', 'pydocstyle', 'python']
 
 "Set JavaScript checkers
 let g:syntastic_javascript_checkers = ['eslint']
+
+" Set up the arrays to ignore for later
+if !exists('g:syntastic_html_tidy_ignore_errors')
+    let g:syntastic_html_tidy_ignore_errors = []
+endif
+
+if !exists('g:syntastic_html_tidy_blocklevel_tags')
+    let g:syntastic_html_tidy_blocklevel_tags = []
+endif
+
+" Ignore ionic tags in HTML syntax checking
+" See http://stackoverflow.com/questions/30366621
+" ignore errors about Ionic tags
+let g:syntastic_html_tidy_ignore_errors += [
+      \ "<ion-",
+      \ "discarding unexpected </ion-"]
+
+" Angular's attributes confuse HTML Tidy
+let g:syntastic_html_tidy_ignore_errors += [
+      \ " proprietary attribute \"ng-"]
+
+" Angular UI-Router attributes confuse HTML Tidy
+let g:syntastic_html_tidy_ignore_errors += [
+      \ " proprietary attribute \"ui-sref"]
+
+" Angular in particular often makes 'empty' blocks, so ignore
+" this error. We might improve how we do this though.
+" See also https://github.com/scrooloose/syntastic/wiki/HTML:---tidy
+" specifically g:syntastic_html_tidy_empty_tags
+let g:syntastic_html_tidy_ignore_errors += ["trimming empty "]
+
+" Angular ignores
+let g:syntastic_html_tidy_blocklevel_tags += [
+      \ 'ng-include',
+      \ 'ng-form'
+      \ ]
+
+" Angular UI-router ignores
+let g:syntastic_html_tidy_ignore_errors += [
+      \ " proprietary attribute \"ui-sref"]
+
 "lnext and lprev shortcut
 noremap <F2> :lnext <CR>
 noremap <F3> :lprevious <CR>
@@ -173,6 +228,63 @@ let g:formatters_javascript = ["jscs", "jsbeautify_javascript"]
 "vim-latex-live-preview
 autocmd Filetype tex setl updatetime=1
 let g:livepreview_previewer = 'open -a Preview'
+
+"" Python settings
+
+" omnicomplete
+set completeopt-=preview                    " remove omnicompletion dropdown
+
+" rope
+let g:pymode_rope=0
+let g:pymode_rope_completion=0
+let g:pymode_rope_complete_on_dot=0
+let g:pymode_rope_auto_project=0
+let g:pymode_rope_enable_autoimport=0
+let g:pymode_rope_autoimport_generate=0
+let g:pymode_rope_guess_project=0
+
+" documentation
+let g:pymode_doc=0
+let g:pymode_doc_key='K'
+
+" lints
+let g:pymode_lint=0
+
+" virtualenv
+let g:pymode_virtualenv=1
+
+" breakpoints
+let g:pymode_breakpoint=1
+let g:pymode_breakpoint_key='<leader>b'
+
+" syntax highlight
+let python_highlight_all=1
+let python_highlight_exceptions=1
+let python_highlight_builtins=1
+let python_slow_sync=1
+let g:pymode_syntax=1
+let g:pymode_syntax_all=1
+let g:pymode_syntax_indent_errors=g:pymode_syntax_all
+let g:pymode_syntax_space_errors=g:pymode_syntax_all
+
+" highlight 'long' lines (>= 80 symbols) in python files
+augroup vimrc_autocmds
+    autocmd!
+    autocmd FileType python,rst highlight Excess ctermbg=DarkGrey guibg=Black
+    autocmd FileType python,rst match Excess /\%81v.*/
+    autocmd FileType python,rst set nowrap
+augroup END
+
+" code folding
+let g:pymode_folding=0
+
+" code running
+let g:pymode_run=0
+
+" jedi-vim
+let g:jedi#popup_select_first=0             " Disable choose first option on autocomplete
+let g:jedi#show_call_signatures=0           " Show call signatures
+let g:jedi#popup_on_dot=1                   " Enable autocomplete on dot
 
 """""""""""""""""""""""""""""""""""
 " FUNCTIONS                       "
