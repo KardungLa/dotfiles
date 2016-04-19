@@ -245,7 +245,7 @@ let g:autoformat_autoindent = 0
 let g:autoformat_retab = 0
 let g:autoformat_remove_trailing_spaces = 0
 
-let g:formatdef_my_custom_c = '"astyle --mode=c --style=gnu -pcHs2 -A2"'
+let g:formatdef_my_custom_c = '"astyle --mode=c --style=gnu --align-pointer=type --align-reference=type -pcHs2U -A2 -W1"'
 let g:formatters_c = ['my_custom_c']
 
 "vim-latex-live-preview
