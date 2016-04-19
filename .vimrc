@@ -19,7 +19,8 @@ Plugin 'scrooloose/nerdtree'
 "Nerd Tree Git Plugin
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 "Airline Plugin
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 "Code Beautifyer
 Plugin 'Chiel92/vim-autoformat'
 "Code Completion
@@ -239,6 +240,13 @@ noremap <F6> :Autoformat<CR>
 
 "Autoformat formatters javascript prior
 let g:formatters_javascript = ["jscs", "jsbeautify_javascript"]
+
+let g:autoformat_autoindent = 0
+let g:autoformat_retab = 0
+let g:autoformat_remove_trailing_spaces = 0
+
+let g:formatdef_my_custom_c = '"astyle --mode=c --style=gnu -pcHs2 -A2"'
+let g:formatters_c = ['my_custom_c']
 
 "vim-latex-live-preview
 autocmd Filetype tex setl updatetime=1
