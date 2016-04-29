@@ -14,10 +14,15 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'christoomey/vim-tmux-navigator'
 "Ctag Tagbar plugin
 Plugin 'majutsushi/tagbar'
+
 "Nerd Tree
 Plugin 'scrooloose/nerdtree'
 "Nerd Tree Git Plugin
 Plugin 'Xuyuanp/nerdtree-git-plugin'
+"NerdCommenter
+"https://github.com/scrooloose/nerdcommenter
+Plugin 'scrooloose/nerdcommenter'
+
 "Airline Plugin
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -36,12 +41,13 @@ Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'jaxbot/browserlink.vim'
 
 "surround
+"https://github.com/tpope/vim-surround
 Plugin 'tpope/vim-surround'
 
 Plugin 'gorodinskiy/vim-coloresque'
 
 Plugin 'SirVer/ultisnips'
-" Snippets are separated from the engine. Add this if you want them:
+"Snippets are separated from the engine. Add this if you want them:
 Plugin 'honza/vim-snippets'
 
 Plugin 'editorconfig/editorconfig-vim'
@@ -49,7 +55,7 @@ Plugin 'editorconfig/editorconfig-vim'
 Plugin 'lervag/vimtex'
 Plugin 'xuhdev/vim-latex-live-preview'
 
-" Python
+"Python
 Plugin 'klen/python-mode' 
 "Jedi-vim autocomplete plugin
 Plugin 'davidhalter/jedi-vim'               
@@ -62,6 +68,19 @@ Plugin 'jmcantrell/vim-virtualenv'
 
 "https://github.com/jeffkreeftmeijer/vim-numbertoggle
 Plugin 'jeffkreeftmeijer/vim-numbertoggle'
+
+"https://github.com/junegunn/goyo.vim
+Plugin 'junegunn/goyo.vim'
+
+"https://github.com/plasticboy/vim-markdown
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+
+"https://github.com/mattn/emmet-vim
+Plugin 'mattn/emmet-vim'
+
+"smooth scroll
+Plugin 'terryma/vim-smooth-scroll'
 
 "All of your Plugins must be added before the following line
 call vundle#end()
@@ -107,6 +126,8 @@ set incsearch
 set showmatch                   
 "Case insensitive search"
 set ignorecase                  
+" show a visual line under the cursor's current line
+set cursorline
 
 "Enable spellcheck
 set spell spelllang=en_us
@@ -122,6 +143,9 @@ imap <up> <nop>
 imap <down> <nop>
 imap <left> <nop>
 imap <right> <nop>
+
+"Map Leader key to comma
+let mapleader=","
 
 """""""""""""""""""""""""
 " PLUGIN CONFIGURATIONS "
@@ -267,11 +291,22 @@ let g:pymode_rope_autoimport_generate=0
 let g:pymode_rope_guess_project=0
 
 " documentation
-let g:pymode_doc=0
+let g:pymode_doc=1
 let g:pymode_doc_key='K'
 
+let g:pymode_folding = 1
+let g:pymode_indent = 1
+
 " lints
-let g:pymode_lint=0
+let g:pymode_lint=1
+let pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe']
+let pymode_lint_cwindow = 1
+let pymode_lint_ignore = ''
+let pymode_lint_message = 1
+let pymode_lint_on_fly = 0
+let pymode_lint_on_write = 1
+let pymode_lint_select = ''
+let pymode_lint_signs = 1
 
 " virtualenv
 let g:pymode_virtualenv=1
@@ -298,16 +333,18 @@ augroup vimrc_autocmds
     autocmd FileType python,rst set nowrap
 augroup END
 
-" code folding
-let g:pymode_folding=0
-
 " code running
-let g:pymode_run=0
+let g:pymode_run=1
+let g:pymode_run_bind = 'r'
 
 " jedi-vim
 let g:jedi#popup_select_first=0             " Disable choose first option on autocomplete
 let g:jedi#show_call_signatures=0           " Show call signatures
 let g:jedi#popup_on_dot=1                   " Enable autocomplete on dot
+
+" arguments: distance, duration, speed
+noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 2, 1)<CR>
+noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 2, 1)<CR>
 
 """""""""""""""""""""""""""""""""""
 " FUNCTIONS                       "
