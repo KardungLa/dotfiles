@@ -82,6 +82,13 @@ Plugin 'mattn/emmet-vim'
 "smooth scroll
 Plugin 'terryma/vim-smooth-scroll'
 
+"https://github.com/beloglazov/vim-online-thesaurus
+Plugin 'beloglazov/vim-online-thesaurus'
+
+"https://github.com/christoomey/vim-quicklink
+Plugin 'mattn/webapi-vim'
+Plugin 'christoomey/vim-quicklink'
+
 "All of your Plugins must be added before the following line
 call vundle#end()
 
@@ -345,6 +352,9 @@ let g:jedi#popup_on_dot=1                   " Enable autocomplete on dot
 " arguments: distance, duration, speed
 noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 2, 1)<CR>
 noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 2, 1)<CR>
+
+let g:online_thesaurus_map_keys = 0
+nnoremap <c-t> :OnlineThesaurusCurrentWord<CR>
 
 """""""""""""""""""""""""""""""""""
 " FUNCTIONS                       "
