@@ -89,6 +89,9 @@ Plugin 'beloglazov/vim-online-thesaurus'
 Plugin 'mattn/webapi-vim'
 Plugin 'christoomey/vim-quicklink'
 
+"R Development
+Plugin 'jalvesaq/Nvim-R'
+
 "All of your Plugins must be added before the following line
 call vundle#end()
 
@@ -355,6 +358,17 @@ noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 2, 1)<CR>
 
 let g:online_thesaurus_map_keys = 0
 nnoremap <c-t> :OnlineThesaurusCurrentWord<CR>
+
+"------------------------------------
+" Nvim-R
+"------------------------------------
+if has("gui_running")
+    inoremap <C-Space> <C-x><C-o>
+else
+    inoremap <Nul> <C-x><C-o>
+endif
+vmap <Space> <Plug>RDSendSelection
+nmap <Space> <Plug>RDSendLine
 
 """""""""""""""""""""""""""""""""""
 " FUNCTIONS                       "
