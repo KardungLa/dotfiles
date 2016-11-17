@@ -33,6 +33,8 @@ Plugin 'Valloric/YouCompleteMe'
 "Syntax checking (needs external syntax checker e.g. node jshint for js)
 Plugin 'scrooloose/syntastic'
 
+Plugin 'jiangmiao/auto-pairs'
+
 Plugin 'marijnh/tern_for_vim'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'nathanaelkane/vim-indent-guides'
@@ -40,6 +42,7 @@ Plugin 'nathanaelkane/vim-indent-guides'
 "Java
 "https://github.com/artur-shaik/vim-javacomplete2
 Plugin 'artur-shaik/vim-javacomplete2'
+Plugin 'mikelue/vim-maven-plugin'
 
 "browserlink (https://github.com/jaxbot/browserlink.vim)
 Plugin 'jaxbot/browserlink.vim'
@@ -50,7 +53,7 @@ Plugin 'tpope/vim-surround'
 
 Plugin 'gorodinskiy/vim-coloresque'
 
-Plugin 'SirVer/ultisnips'
+"Plugin 'SirVer/ultisnips'
 "Snippets are separated from the engine. Add this if you want them:
 Plugin 'honza/vim-snippets'
 
@@ -78,7 +81,7 @@ Plugin 'junegunn/goyo.vim'
 
 "https://github.com/plasticboy/vim-markdown
 Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
+"Plugin 'plasticboy/vim-markdown'
 
 "https://github.com/mattn/emmet-vim
 Plugin 'mattn/emmet-vim'
@@ -176,8 +179,6 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 "
 "If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
-
-let delimitMate_expand_cr = 1
 
 "Remap navigation keys (tmux)
 nnoremap <c-j> <c-w>j
