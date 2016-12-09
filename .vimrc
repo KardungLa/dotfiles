@@ -15,8 +15,11 @@ Plugin 'christoomey/vim-tmux-navigator'
 "Ctag Tagbar plugin
 Plugin 'majutsushi/tagbar'
 
+Plugin 'kien/ctrlp.vim'
+
 "Nerd Tree
 Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
 "Nerd Tree Git Plugin
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 "NerdCommenter
@@ -42,9 +45,7 @@ Plugin 'nathanaelkane/vim-indent-guides'
 "Java
 "https://github.com/artur-shaik/vim-javacomplete2
 Plugin 'artur-shaik/vim-javacomplete2'
-Plugin 'mikelue/vim-maven-plugin'
-
-"browserlink (https://github.com/jaxbot/browserlink.vim)
+Plugin 'mikelue/vim-maven-plugin' "browserlink (https://github.com/jaxbot/browserlink.vim)
 Plugin 'jaxbot/browserlink.vim'
 
 "surround
@@ -64,6 +65,7 @@ Plugin 'xuhdev/vim-latex-live-preview'
 
 "Python
 Plugin 'klen/python-mode' 
+Plugin 'nvie/vim-flake8'
 "Jedi-vim autocomplete plugin
 Plugin 'davidhalter/jedi-vim'               
 "Jinja support for vim
@@ -101,6 +103,12 @@ Plugin 'jalvesaq/Nvim-R'
 
 "vim vertical move
 Plugin 'bruno-/vim-vertical-move'
+
+"Matlab
+Plugin 'ervandew/screen'
+Plugin 'dajero/VimLab'
+
+Plugin 'tmhedberg/SimpylFold'
 
 "All of your Plugins must be added before the following line
 call vundle#end()
@@ -167,6 +175,8 @@ imap <right> <nop>
 "Map Leader key to comma
 let mapleader=","
 
+set nofoldenable
+
 """""""""""""""""""""""""
 " PLUGIN CONFIGURATIONS "
 """""""""""""""""""""""""
@@ -188,15 +198,21 @@ nnoremap <c-l> <c-w>l
 
 "Toggle Tagbar Plugin
 nmap <F8> :TagbarToggle<CR>
+let g:tagbar_autofocus=0
+let g:tagbar_width=42
+autocmd BufEnter *.py :call tagbar#autoopen(0)
+autocmd BufWinLeave *.py :TagbarClose
 
 "Toggle NERDTree
 nmap <F9> :NERDTreeToggle<CR>
 
 "NERDTREE AutoStart
-"autocmd vimenter * NERDTree
+autocmd vimenter * NERDTree
 "autocmd StdinReadPre * let s:std_in=1
 "autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 
 "Airline Config
 set laststatus=2
@@ -216,6 +232,8 @@ set completeopt-=preview
 " like, so these should tidy it up a bit for you.
 let g:ycm_add_preview_to_completeopt=0
 let g:ycm_confirm_extra_conf=0
+let g:ycm_autoclose_preview_window_after_completion=1
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 "Syntastic settings
 set statusline+=%#warningmsg#
@@ -294,6 +312,8 @@ let g:formatters_c = ['my_custom_c']
 autocmd Filetype tex setl updatetime=1
 let g:livepreview_previewer = 'open -a Preview'
 
+let g:SimpylFold_docstring_preview=1
+
 "" Python settings
 
 " omnicomplete
@@ -361,8 +381,8 @@ let g:jedi#show_call_signatures=0           " Show call signatures
 let g:jedi#popup_on_dot=1                   " Enable autocomplete on dot
 
 " arguments: distance, duration, speed
-noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 2, 1)<CR>
-noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 2, 1)<CR>
+noremap <silent> <c-b> :call smooth_scroll#up(&scroll, 50, 1)<CR>
+noremap <silent> <c-f> :call smooth_scroll#down(&scroll, 50, 1)<CR>
 
 let g:online_thesaurus_map_keys = 0
 nnoremap <c-t> :OnlineThesaurusCurrentWord<CR>
