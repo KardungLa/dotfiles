@@ -10,6 +10,7 @@ call vundle#begin()
 
 "let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
+
 "Tmux seamless navigation
 Plugin 'christoomey/vim-tmux-navigator'
 "Ctag Tagbar plugin
@@ -17,11 +18,6 @@ Plugin 'majutsushi/tagbar'
 
 Plugin 'kien/ctrlp.vim'
 
-"Nerd Tree
-Plugin 'scrooloose/nerdtree'
-Plugin 'jistr/vim-nerdtree-tabs'
-"Nerd Tree Git Plugin
-Plugin 'Xuyuanp/nerdtree-git-plugin'
 "NerdCommenter
 "https://github.com/scrooloose/nerdcommenter
 Plugin 'scrooloose/nerdcommenter'
@@ -42,16 +38,7 @@ Plugin 'marijnh/tern_for_vim'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'nathanaelkane/vim-indent-guides'
 
-"Java
-"https://github.com/artur-shaik/vim-javacomplete2
-"Plugin 'artur-shaik/vim-javacomplete2'
-Plugin 'mikelue/vim-maven-plugin' "browserlink (https://github.com/jaxbot/browserlink.vim)
-
 Plugin 'jaxbot/browserlink.vim'
-
-"surround
-"https://github.com/tpope/vim-surround
-Plugin 'tpope/vim-surround'
 
 Plugin 'gorodinskiy/vim-coloresque'
 
@@ -70,24 +57,16 @@ Plugin 'nvie/vim-flake8'
 Plugin 'jmcomets/vim-pony'
 "Jedi-vim autocomplete plugin
 Plugin 'davidhalter/jedi-vim'               
-"Jinja support for vim
-Plugin 'mitsuhiko/vim-jinja'                
+
 Plugin 'hynek/vim-python-pep8-indent' 
 "Combined Python 2/3 for Vim
 Plugin 'mitsuhiko/vim-python-combined'      
 Plugin 'jmcantrell/vim-virtualenv' 
 
-"https://github.com/jeffkreeftmeijer/vim-numbertoggle
-Plugin 'jeffkreeftmeijer/vim-numbertoggle'
-
-"https://github.com/junegunn/goyo.vim
-Plugin 'junegunn/goyo.vim'
-
-"https://github.com/plasticboy/vim-markdown
+" http://vimcasts.org/episodes/aligning-text-with-tabular-vim/
 Plugin 'godlygeek/tabular'
-"Plugin 'plasticboy/vim-markdown'
 
-"https://github.com/mattn/emmet-vim
+" Emmet
 Plugin 'mattn/emmet-vim'
 
 "smooth scroll
@@ -97,20 +76,21 @@ Plugin 'terryma/vim-smooth-scroll'
 Plugin 'beloglazov/vim-online-thesaurus'
 
 "https://github.com/christoomey/vim-quicklink
+" gx - Open link under cursor;
+" gl - Go to link defintion under cursor.
 Plugin 'mattn/webapi-vim'
 Plugin 'christoomey/vim-quicklink'
-
-"R Development
-Plugin 'jalvesaq/Nvim-R'
 
 "vim vertical move
 Plugin 'bruno-/vim-vertical-move'
 
-"Matlab
-Plugin 'ervandew/screen'
-Plugin 'dajero/VimLab'
-
 Plugin 'tmhedberg/SimpylFold'
+
+"Typescript and Angular 2
+Plugin 'leafgarland/typescript-vim'
+Plugin 'Quramy/vim-js-pretty-template'
+Plugin 'Shougo/vimproc.vim'
+Plugin 'Quramy/tsuquyomi'
 
 "All of your Plugins must be added before the following line
 call vundle#end()
@@ -132,6 +112,20 @@ set hidden
 set history=100
 
 syntax on
+
+" Search down into subfolders
+set path+=**
+
+" Display all matching files when we tab complete
+set wildmenu
+
+" Tweaks for browsing
+let g:netrw_banner=0        " disable annoying banner
+let g:netrw_browse_split=4  " open in prior window
+let g:netrw_altv=1          " open splits to the right
+let g:netrw_liststyle=3     " tree view
+let g:netrw_list_hide=netrw_gitignore#Hide()
+let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 
 "Set Zenburn color scheme
 color zenburn
@@ -179,6 +173,9 @@ let mapleader=","
 
 set nofoldenable
 
+" Create the tags files
+command! MakeTags !ctags -R .
+
 """""""""""""""""""""""""
 " PLUGIN CONFIGURATIONS "
 """""""""""""""""""""""""
@@ -208,22 +205,22 @@ autocmd BufWinLeave *.py :TagbarClose
 let g:AutoPairsFlyMode = 1
 let g:AutoPairsShortcutJump = '<c-n>'
 
-"Toggle NERDTree
-nmap <F9> :NERDTreeToggle<CR>
-
-"NERDTREE AutoStart
-autocmd vimenter * NERDTree
-"autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
-let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
-
 "Airline Config
 set laststatus=2
 set ttimeoutlen=50
 let g:airline_powerline_fonts = 1
 
+"Typescript and Angular 2 Config
+let g:typescript_compiler_binary = 'tsc'
+let g:typescript_compiler_options = ''
+autocmd QuickFixCmdPost [^l]* nested cwindow
+autocmd QuickFixCmdPost    l* nested lwindow
+
+autocmd FileType typescript JsPreTmpl html
+autocmd FileType typescript syn clear foldBraces
+
+let g:tsuquyomi_disable_quickfix = 1
+let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
 
 if !exists("g:ycm_semantic_triggers")
 	let g:ycm_semantic_triggers = {}
@@ -248,6 +245,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_python_python_exec = 'python3.4'
 let g:syntastic_python_checkers = ['flake8', 'pydocstyle', 'python']
 
 "Set JavaScript checkers
@@ -325,6 +323,7 @@ let g:SimpylFold_docstring_preview=1
 set completeopt-=preview                    " remove omnicompletion dropdown
 
 " rope
+let g:pymode_python = 'python3'
 let g:pymode_rope=0
 let g:pymode_rope_completion=0
 let g:pymode_rope_complete_on_dot=0
@@ -392,38 +391,6 @@ noremap <silent> <c-f> :call smooth_scroll#down(&scroll, 50, 1)<CR>
 let g:online_thesaurus_map_keys = 0
 nnoremap <c-t> :OnlineThesaurusCurrentWord<CR>
 
-"Java Autocomplete2
-"nmap <leader>jI <Plug>(JavaComplete-Imports-AddMissing)
-"nmap <leader>jR <Plug>(JavaComplete-Imports-RemoveUnused)
-"nmap <leader>ji <Plug>(JavaComplete-Imports-AddSmart)
-"nmap <leader>jii <Plug>(JavaComplete-Imports-Add)
-
-"imap <C-j>I <Plug>(JavaComplete-Imports-AddMissing)
-"imap <C-j>R <Plug>(JavaComplete-Imports-RemoveUnused)
-"imap <C-j>i <Plug>(JavaComplete-Imports-AddSmart)
-"imap <C-j>ii <Plug>(JavaComplete-Imports-Add)
-
-"nmap <leader>jM <Plug>(JavaComplete-Generate-AbstractMethods)
-
-"imap <C-j>jM <Plug>(JavaComplete-Generate-AbstractMethods)
-
-"nmap <leader>jA <Plug>(JavaComplete-Generate-Accessors)
-"nmap <leader>js <Plug>(JavaComplete-Generate-AccessorSetter)
-"nmap <leader>jg <Plug>(JavaComplete-Generate-AccessorGetter)
-"nmap <leader>ja <Plug>(JavaComplete-Generate-AccessorSetterGetter)
-"nmap <leader>jts <Plug>(JavaComplete-Generate-ToString)
-"nmap <leader>jeq <Plug>(JavaComplete-Generate-EqualsAndHashCode)
-"nmap <leader>jc <Plug>(JavaComplete-Generate-Constructor)
-"nmap <leader>jcc <Plug>(JavaComplete-Generate-DefaultConstructor)
-
-"imap <C-j>s <Plug>(JavaComplete-Generate-AccessorSetter)
-"imap <C-j>g <Plug>(JavaComplete-Generate-AccessorGetter)
-"imap <C-j>a <Plug>(JavaComplete-Generate-AccessorSetterGetter)
-
-"vmap <leader>js <Plug>(JavaComplete-Generate-AccessorSetter)
-"vmap <leader>jg <Plug>(JavaComplete-Generate-AccessorGetter)
-"vmap <leader>ja <Plug>(JavaComplete-Generate-AccessorSetterGetter)
-"autocmd FileType java setlocal omnifunc=javacomplete#Complete
 "------------------------------------
 " Nvim-R
 "------------------------------------
@@ -434,6 +401,9 @@ else
 endif
 vmap <Space> <Plug>RDSendSelection
 nmap <Space> <Plug>RDSendLine
+
+nnoremap <leader>. :CtrlPTag<cr>
+nnoremap <silent> <Leader>b :TagbarToggle<CR>
 
 """""""""""""""""""""""""""""""""""
 " FUNCTIONS                       "
