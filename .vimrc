@@ -1,5 +1,5 @@
 "Daniel's .vimrc 
-
+"for Vim 8
 """""""""""""""""""""""""
 " VUNDLE PACKAGES       "
 """""""""""""""""""""""""
@@ -11,6 +11,9 @@ call vundle#begin()
 "let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
+"https://github.com/skywind3000/asyncrun.vim
+Plugin 'skywind3000/asyncrun.vim'
+
 "Tmux seamless navigation
 Plugin 'christoomey/vim-tmux-navigator'
 "Ctag Tagbar plugin
@@ -18,6 +21,10 @@ Plugin 'majutsushi/tagbar'
 
 Plugin 'kien/ctrlp.vim'
 
+"Nerd Tree
+Plugin 'scrooloose/nerdtree'
+"Nerd Tree Git Plugin
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 "NerdCommenter
 "https://github.com/scrooloose/nerdcommenter
 Plugin 'scrooloose/nerdcommenter'
@@ -25,12 +32,15 @@ Plugin 'scrooloose/nerdcommenter'
 "Airline Plugin
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+
 "Code Beautifyer
 Plugin 'Chiel92/vim-autoformat'
+
 "Code Completion
 Plugin 'Valloric/YouCompleteMe'
-"Syntax checking (needs external syntax checker e.g. node jshint for js)
-Plugin 'scrooloose/syntastic'
+
+" Vim 8 Syntax Validation (similar to Syntastic)
+Plugin 'maralla/validator.vim'
 
 Plugin 'jiangmiao/auto-pairs'
 
@@ -42,10 +52,6 @@ Plugin 'jaxbot/browserlink.vim'
 
 Plugin 'gorodinskiy/vim-coloresque'
 
-"Plugin 'SirVer/ultisnips'
-"Snippets are separated from the engine. Add this if you want them:
-Plugin 'honza/vim-snippets'
-
 Plugin 'editorconfig/editorconfig-vim'
 
 Plugin 'lervag/vimtex'
@@ -53,7 +59,6 @@ Plugin 'xuhdev/vim-latex-live-preview'
 
 "Python
 Plugin 'klen/python-mode' 
-Plugin 'nvie/vim-flake8'
 Plugin 'jmcomets/vim-pony'
 "Jedi-vim autocomplete plugin
 Plugin 'davidhalter/jedi-vim'               
@@ -63,10 +68,10 @@ Plugin 'hynek/vim-python-pep8-indent'
 Plugin 'mitsuhiko/vim-python-combined'      
 Plugin 'jmcantrell/vim-virtualenv' 
 
-" http://vimcasts.org/episodes/aligning-text-with-tabular-vim/
+"http://vimcasts.org/episodes/aligning-text-with-tabular-vim/
 Plugin 'godlygeek/tabular'
 
-" Emmet
+"Emmet
 Plugin 'mattn/emmet-vim'
 
 "smooth scroll
@@ -179,15 +184,6 @@ command! MakeTags !ctags -R .
 """""""""""""""""""""""""
 " PLUGIN CONFIGURATIONS "
 """""""""""""""""""""""""
-"
-"Trigger configuration. Do not use <tab> if you use
-"#https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<F10>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-"
-"If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
 
 "Remap navigation keys (tmux)
 nnoremap <c-j> <c-w>j
@@ -195,13 +191,21 @@ nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 
-"Toggle Tagbar Plugin
+"Tagbar Plugin
 nmap <F8> :TagbarToggle<CR>
 let g:tagbar_autofocus=0
 let g:tagbar_width=42
 autocmd BufEnter *.py :call tagbar#autoopen(0)
 autocmd BufWinLeave *.py :TagbarClose
 
+"NerdTree
+nmap <leader>t :NERDTreeToggle<CR>
+autocmd vimenter * NERDTree
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+"Autopairs
 let g:AutoPairsFlyMode = 1
 let g:AutoPairsShortcutJump = '<c-n>'
 
@@ -215,13 +219,12 @@ let g:typescript_compiler_binary = 'tsc'
 let g:typescript_compiler_options = ''
 autocmd QuickFixCmdPost [^l]* nested cwindow
 autocmd QuickFixCmdPost    l* nested lwindow
-
 autocmd FileType typescript JsPreTmpl html
 autocmd FileType typescript syn clear foldBraces
 
 let g:tsuquyomi_disable_quickfix = 1
-let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
 
+"YouCompleteMe
 if !exists("g:ycm_semantic_triggers")
 	let g:ycm_semantic_triggers = {}
 endif
@@ -237,65 +240,15 @@ let g:ycm_confirm_extra_conf=0
 let g:ycm_autoclose_preview_window_after_completion=1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
-"Syntastic settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_python_python_exec = 'python3.4'
-let g:syntastic_python_checkers = ['flake8', 'pydocstyle', 'python']
-
-"Set JavaScript checkers
-let g:syntastic_javascript_checkers = ['eslint']
-
-" Set up the arrays to ignore for later
-if !exists('g:syntastic_html_tidy_ignore_errors')
-    let g:syntastic_html_tidy_ignore_errors = []
-endif
-
-if !exists('g:syntastic_html_tidy_blocklevel_tags')
-    let g:syntastic_html_tidy_blocklevel_tags = []
-endif
-
-" Ignore ionic tags in HTML syntax checking
-" See http://stackoverflow.com/questions/30366621
-" ignore errors about Ionic tags
-let g:syntastic_html_tidy_ignore_errors += [
-      \ "<ion-",
-      \ "discarding unexpected </ion-"]
-
-" Angular's attributes confuse HTML Tidy
-let g:syntastic_html_tidy_ignore_errors += [
-      \ " proprietary attribute \"ng-"]
-
-" Angular UI-Router attributes confuse HTML Tidy
-let g:syntastic_html_tidy_ignore_errors += [
-      \ " proprietary attribute \"ui-sref"]
-
-" Angular in particular often makes 'empty' blocks, so ignore
-" this error. We might improve how we do this though.
-" See also https://github.com/scrooloose/syntastic/wiki/HTML:---tidy
-" specifically g:syntastic_html_tidy_empty_tags
-let g:syntastic_html_tidy_ignore_errors += ["trimming empty "]
-
-" Angular ignores
-let g:syntastic_html_tidy_blocklevel_tags += [
-      \ 'ng-include',
-      \ 'ng-form',
-      \ 'ng-hide',
-      \ 'ng-show'
-      \ ]
-
-" Angular UI-router ignores
-let g:syntastic_html_tidy_ignore_errors += [
-      \ " proprietary attribute \"ui-sref"]
+"Validator settings
+let g:validator_javascript_checkers = ['eslint']
+let g:validator_python_checkers = ['flake8']
+let g:validator_auto_open_quickfix = 0
+noremap <leader>v :ValidatorCheck<CR>
 
 "lnext and lprev shortcut
-noremap <F2> :lnext <CR>
-noremap <F3> :lprevious <CR>
+noremap <F2> :lnext<CR>
+noremap <F3> :lprevious<CR>
 
 "Autoformat mappings
 noremap <F6> :Autoformat<CR>
@@ -317,7 +270,7 @@ let g:livepreview_previewer = 'open -a Preview'
 
 let g:SimpylFold_docstring_preview=1
 
-"" Python settings
+"Python settings
 
 " omnicomplete
 set completeopt-=preview                    " remove omnicompletion dropdown
@@ -355,7 +308,7 @@ let g:pymode_virtualenv=1
 
 " breakpoints
 let g:pymode_breakpoint=1
-let g:pymode_breakpoint_key='<leader>b'
+let g:pymode_breakpoint_key='<leader>p'
 
 " syntax highlight
 let python_highlight_all=1
@@ -384,10 +337,12 @@ let g:jedi#popup_select_first=0             " Disable choose first option on aut
 let g:jedi#show_call_signatures=0           " Show call signatures
 let g:jedi#popup_on_dot=1                   " Enable autocomplete on dot
 
-" arguments: distance, duration, speed
+"SmoothScroll
+"arguments: distance, duration, speed
 noremap <silent> <c-b> :call smooth_scroll#up(&scroll, 50, 1)<CR>
 noremap <silent> <c-f> :call smooth_scroll#down(&scroll, 50, 1)<CR>
 
+"Online Thesaurus
 let g:online_thesaurus_map_keys = 0
 nnoremap <c-t> :OnlineThesaurusCurrentWord<CR>
 
@@ -402,6 +357,7 @@ endif
 vmap <Space> <Plug>RDSendSelection
 nmap <Space> <Plug>RDSendLine
 
+"CtrlP and Tagbar
 nnoremap <leader>. :CtrlPTag<cr>
 nnoremap <silent> <Leader>b :TagbarToggle<CR>
 
